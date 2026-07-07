@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # IPO Drafting Workspace (IPOW)
 
 > A Collaborative Platform for SME-Led, Expert-Reviewed IPO Offer Document Drafting
@@ -45,3 +46,7 @@ Login → Guided Wizard + Document Upload → Smart Document Parser (OCR + LLM e
 ## Documentation
 
 - [Software Requirement Specification](docs/SRS.md) — full SRS (also available as .docx / .pdf in `docs/`)
+=======
+# Simplify-IPO-
+Simplifying IPO Offer Document Preparation for SMEs
+>>>>>>> c57cf9bd765d658f7367c15264f1a498198684da

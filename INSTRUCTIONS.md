@@ -14,9 +14,31 @@ switch on a real model; see the end.)
 | Node.js + npm | ≥ 18 (tested 24) | `node -v` |
 | Python | ≥ 3.10 (tested 3.14) | `python --version` |
 
+*(Docker path below needs only Docker Desktop — no Node/Python on the host.)*
+
 ---
 
-## 2. Install (once)
+## 2a. Fastest path — Docker (one line)
+
+With Docker Desktop running:
+
+```bash
+docker compose up --build
+```
+
+Then open **http://localhost:5173**. That builds and starts all three services
+(frontend on :5173, backend on :4000, AI on :8000) wired together. Stop with
+`Ctrl+C`, or `docker compose down` to remove the containers.
+
+> The Docker image installs the optional deps too, so Word (.docx) export and a
+> real LLM work out of the box — export `LLM_PROVIDER` + an API key before `up`.
+> If ports 5173/4000/8000 are already taken (e.g. a manual run below), free them first.
+
+Prefer running from source without Docker? Continue with the manual steps.
+
+---
+
+## 2b. Install from source (once)
 
 Run each block from the repo root (`E:\w\IPO`).
 

@@ -1,0 +1,34 @@
+# One-line run:  docker compose up --build
+# Then open      http://localhost:5173
+#
+# Runs fully offline (stub LLM, in-memory store). To use a real model, export
+# LLM_PROVIDER + the matching API key before `up` (the AI image already includes
+# the anthropic/openai SDKs).
+
+services:
+  ai-service:
+    build: ./ai-service
+    environment:
+      LLM_PROVIDER: ${LLM_PROVIDER:-stub}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    ports:
+      - "8000:8000"   # AI docs at http://localhost:8000/docs
+
+  backend:
+    build: ./backend
+    environment:
+      PORT: "4000"
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-prod}
+      AI_SERVICE_URL: http://ai-service:8000
+    depends_on:
+      - ai-service
+    ports:
+      - "4000:4000"   # backend health at http://localhost:4000/api/health
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"     # app at http://localhost:5173

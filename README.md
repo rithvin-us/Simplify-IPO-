@@ -49,9 +49,19 @@ Login → Guided Wizard + Document Upload → Smart Document Parser (OCR + LLM e
 - [docs/RUNBOOK.md](docs/RUNBOOK.md) — developer runbook, endpoint map, troubleshooting
 - [Software Requirement Specification](docs/SRS.md) — full SRS (also available as .docx / .pdf in `docs/`)
 
-## Running the prototype (dev)
+## Running the prototype
 
-Three services. Runs fully offline — no Postgres, no LLM key required (deterministic stub fallbacks). See [docs/RUNBOOK.md](docs/RUNBOOK.md).
+Runs fully offline — no Postgres, no LLM key required (deterministic stub fallbacks). Full walkthrough in [INSTRUCTIONS.md](INSTRUCTIONS.md); dev/endpoint detail in [docs/RUNBOOK.md](docs/RUNBOOK.md).
+
+### Option A — Docker (one line)
+
+With Docker Desktop running:
+
+```
+docker compose up --build      # → open http://localhost:5173
+```
+
+### Option B — from source (three services)
 
 ```
 # 1. AI service (FastAPI)      → http://localhost:8000

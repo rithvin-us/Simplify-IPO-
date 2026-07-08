@@ -1,11 +1,9 @@
+# Core runtime — pure/portable, installs on Python 3.14. Pipeline runs on these.
 fastapi>=0.115
-uvicorn[standard]>=0.30
-anthropic>=0.40
-openai>=1.50
-pymupdf>=1.24          # PDF text/table extraction
-python-docx>=1.1       # .docx parsing + DRHP export generation
-openpyxl>=3.1          # .xlsx parsing
+uvicorn>=0.30
 pydantic>=2.8
-psycopg[binary]>=3.2
-boto3>=1.34            # S3
 python-multipart>=0.0.9
+
+# Optional enhancements (see requirements-optional.txt): real LLM providers and
+# native document parsers/exporters. The service degrades gracefully without them
+# (deterministic stub extraction/drafting, markdown/HTML export instead of .docx).

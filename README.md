@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # IPO Drafting Workspace (IPOW)
 
 > A Collaborative Platform for SME-Led, Expert-Reviewed IPO Offer Document Drafting
@@ -11,11 +10,12 @@ A collaborative web platform where an SME promoter builds a substantially comple
 
 ```
 IPO/
-├── docs/            # SRS, architecture docs, exported SRS.docx / SRS.pdf
-├── frontend/        # React SPA (login, dashboards, wizard, draft viewer, review UI)
-├── backend/         # Node.js/Express — application services (auth, workspaces, review, billing)
-├── ai-service/      # FastAPI — AI/document services (parsing, extraction, validation, drafting)
-├── database/        # PostgreSQL schema and migrations
+├── docs/            # SRS (.md/.docx/.pdf), RUNBOOK.md
+├── INSTRUCTIONS.md  # Setup + demo walkthrough (start here)
+├── frontend/        # React SPA (9 screens: login, dashboard, wizard, extraction, validation, draft, review, export)
+├── backend/         # Node.js/Express — auth, workspaces, wizard data, documents, sections, reviews, dashboard, export
+├── ai-service/      # FastAPI — /parse /extract /validate /draft /export (+ optional real LLM)
+├── database/        # PostgreSQL schema (production target; prototype uses an in-memory store of the same shape)
 └── .env.example     # Environment variable template
 ```
 
@@ -23,14 +23,14 @@ IPO/
 
 | Layer | Technology |
 |---|---|
-| Frontend | React |
+| Frontend | React + Vite |
 | App backend | Node.js + Express |
 | AI/document backend | FastAPI (Python) |
-| Database | PostgreSQL |
-| File storage | AWS S3 (local disk fallback for dev) |
-| Auth | JWT + bcrypt, role-based access control |
-| AI | Claude / GPT via API (extraction, validation, drafting) |
-| Export | python-docx → Word, PDF rendering |
+| Database | PostgreSQL (schema); prototype runs on an in-memory store of the same shape |
+| File storage | Local disk (S3-ready) |
+| Auth | JWT + `crypto.scrypt` (no native build), role-based access control |
+| AI | Claude / GPT via API — with a deterministic stub fallback so it runs offline with no key |
+| Export | python-docx → Word; print-ready HTML → PDF |
 
 ## Roles
 
@@ -45,8 +45,23 @@ Login → Guided Wizard + Document Upload → Smart Document Parser (OCR + LLM e
 
 ## Documentation
 
+- [INSTRUCTIONS.md](INSTRUCTIONS.md) — setup, run, and demo walkthrough (**start here**)
+- [docs/RUNBOOK.md](docs/RUNBOOK.md) — developer runbook, endpoint map, troubleshooting
 - [Software Requirement Specification](docs/SRS.md) — full SRS (also available as .docx / .pdf in `docs/`)
-=======
-# Simplify-IPO-
-Simplifying IPO Offer Document Preparation for SMEs
->>>>>>> c57cf9bd765d658f7367c15264f1a498198684da
+
+## Running the prototype (dev)
+
+Three services. Runs fully offline — no Postgres, no LLM key required (deterministic stub fallbacks). See [docs/RUNBOOK.md](docs/RUNBOOK.md).
+
+```
+# 1. AI service (FastAPI)      → http://localhost:8000
+cd ai-service && pip install -r requirements.txt && python -m uvicorn app.main:app --port 8000
+
+# 2. Backend (Express)         → http://localhost:4000
+cd backend && npm install && npm run dev
+
+# 3. Frontend (React/Vite)     → http://localhost:5173
+cd frontend && npm install && npm run dev
+```
+
+Demo logins (seeded): `sme@demo.in`, `mb@demo.in`, `legal@demo.in` — password `demo` for all.

@@ -10,6 +10,7 @@ export default function DraftViewer() {
   const [missing, setMissing] = useState([]);
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState('');
+  const [descs, setDescs] = useState({});
 
   function load() {
     api.get(`/workspaces/${workspaceId}/sections`).then((r) => {
@@ -18,6 +19,9 @@ export default function DraftViewer() {
     });
   }
   useEffect(load, [workspaceId]);
+  useEffect(() => {
+    api.get('/meta').then((r) => { const m = {}; (r.data.sections || []).forEach((s) => { m[s.key] = s.description; }); setDescs(m); });
+  }, []);
 
   function select(s) { setActive(s); setContent(s.content || ''); setMissing([]); setNote(''); }
 
@@ -60,6 +64,7 @@ export default function DraftViewer() {
                 <button onClick={save} disabled={!content}>Save</button>
               </div>
             </div>
+            {descs[active.section_key] && <div className="field-desc" style={{ marginTop: '.4rem' }}>{descs[active.section_key]}</div>}
             {missing.length > 0 && <div className="notice" style={{ marginTop: '.6rem' }}>Missing data: {missing.join(', ')} — shown as [INFORMATION REQUIRED] in the draft.</div>}
             {note && <p className="ok">{note}</p>}
             <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Generate a draft, then edit here…" style={{ marginTop: '.6rem' }} />

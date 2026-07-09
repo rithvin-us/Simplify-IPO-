@@ -9,6 +9,8 @@ const TABS = [
   ['draft', '4 · Draft'],
   ['review', '5 · Review'],
   ['export', '6 · Export'],
+  ['access', 'Access'],
+  ['issues', 'Issues'],
 ];
 
 export default function WorkspaceLayout() {

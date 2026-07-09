@@ -29,6 +29,10 @@ const db = {
   validationFlags: [],  // {id, workspace_id, field_key, section_key, issue_type, reason, resolved}
   reviewComments: [],   // {id, section_id, author_id, action, body}
   activity: [],         // {id, workspace_id, actor_id, event_type, detail, created_at}
+  accessRequests: [],   // {id, workspace_id, requester_id, target_email, target_role, status, message}
+  issues: [],           // {id, workspace_id, author_id, title, body, section_key, status, created_at}
+  issueComments: [],    // {id, issue_id, author_id, body, created_at}
+  commits: [],          // {id, workspace_id, author_id, message, section_key, created_at}
 };
 
 const seq = {};
@@ -75,6 +79,12 @@ function isMember(workspace_id, user_id) {
   const ws = db.workspaces.find((w) => w.id === workspace_id);
   if (ws && ws.created_by === user_id) return true;
   return db.members.some((m) => m.workspace_id === workspace_id && m.user_id === user_id);
+}
+
+function addMember(workspace_id, user_id, member_role, invited_by) {
+  if (isMember(workspace_id, user_id)) return false;
+  db.members.push({ workspace_id, user_id, member_role, invited_by, joined_at: new Date().toISOString() });
+  return true;
 }
 
 function ipoDataMap(workspace_id) {
@@ -145,6 +155,6 @@ function seed() {
 
 module.exports = {
   db, nextId, SECTIONS, REQUIRED_DOC_CATEGORIES,
-  createUser, findUserByEmail, publicUser, logActivity, isMember,
+  createUser, findUserByEmail, publicUser, logActivity, isMember, addMember,
   ipoDataMap, upsertIpoData, trackedSources, computeHealth, seed,
 };

@@ -12,7 +12,7 @@ stub logic so the pipeline is runnable and debuggable end-to-end.
 """
 from fastapi import FastAPI
 
-from .schema import FIELD_SCHEMA, SECTIONS, WIZARD_STEPS
+from .schema import FIELD_SCHEMA, SECTIONS, WIZARD_STEPS, WIZARD_STEP_META
 from .settings import settings
 from .routers import parse, extract, validate, draft, export
 
@@ -32,7 +32,7 @@ def health() -> dict:
 
 @app.get("/schema/fields")
 def field_schema() -> dict:
-    return {"wizard_steps": WIZARD_STEPS, "fields": FIELD_SCHEMA}
+    return {"wizard_steps": WIZARD_STEPS, "step_meta": WIZARD_STEP_META, "fields": FIELD_SCHEMA}
 
 
 @app.get("/schema/sections")

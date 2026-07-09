@@ -108,9 +108,16 @@ for one-click sign-in.
 ### As the SME
 1. Sign in as **SME**. Click **Start a new IPO** → enter a company name (e.g.
    *Acme Precision Components Limited*) and CIN → **Create workspace**.
-2. Open the workspace. You land on the **1 · Wizard** tab.
-3. **Upload a document.** Any `.txt`/`.pdf`/`.docx` works. For a clean offline
-   extraction, save this as `profile.txt` and upload it under the *Company* step:
+2. Open the workspace. You land on the **1 · Wizard** tab. Fields are typed and
+   checked as you type — a **green border** means the value is verified; a red
+   border shows what to fix (numbers only in number fields, valid dates, etc.).
+   Add multiple promoters, pick the industry, and choose risk factors from the
+   dropdown or type your own. Press any **ⓘ** for a short description.
+3. **Upload a document.** Easiest: use the ready-made PDFs in
+   [`sampleData/`](sampleData/) — `acme_company_profile.pdf` (Company step),
+   `acme_financials.pdf` (Financials), `acme_legal.pdf` (Legal). Any
+   `.txt`/`.pdf`/`.docx` works. For a hand-made file, save this as `profile.txt`
+   and upload it under the *Company* step:
 
    ```
    Company Name: Acme Precision Components Limited
@@ -138,14 +145,19 @@ for one-click sign-in.
    cross-document conflicts, and SEBI disclosure gaps. Resolve as you fix data.
 6. **4 · Draft** — pick each section, click **Generate**, edit the text, **Save**
    (marks it verified). Missing data shows as `[INFORMATION REQUIRED: …]`.
-7. Invite reviewers: on the workspace, add `mb@demo.in` and `legal@demo.in` as
-   members (SME creator or a merchant banker may invite).
+7. **Request collaborators** (GitHub-style): open the **Access** tab → send a
+   request to `mb@demo.in` (Merchant Banker) and `legal@demo.in` (Legal Counsel).
+   Only you, the company, can raise these. The **Access** tab also lists every
+   collaborator with their contact details.
 
 ### As the reviewers
-8. Sign out, sign in as **Merchant Banker** → open the same workspace →
-   **5 · Review** → approve *Objects of the Issue*.
-9. Sign in as **Legal Counsel** → **5 · Review** → approve *Risk Factors*.
-   (SMEs cannot approve/reject — that is enforced.)
+8. Sign out, sign in as **Merchant Banker**. On the **dashboard** an *Access
+   requests for you* card appears → **Accept** to join the workspace.
+9. Open the workspace → **5 · Review** → approve *Objects of the Issue*.
+   On the **Issues** tab, raise an issue and record a **commit** (a signed change
+   to the draft — merchant bankers drive this). Sign in as **Legal Counsel**,
+   accept the request, and approve *Risk Factors*. (SMEs cannot approve/reject —
+   that is enforced.)
 
 ### Back as the SME
 10. **6 · Export** — check readiness (sections drafted, `[INFORMATION REQUIRED]`

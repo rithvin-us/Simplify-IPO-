@@ -19,23 +19,28 @@ app.use('/api/workspaces/:id/documents', require('./routes/documents'));
 app.use('/api/workspaces/:id/sections', require('./routes/sections'));
 app.use('/api/workspaces/:id/export', require('./routes/export'));
 
-// Metadata for the wizard/UI: field catalogue (from AI service) + section catalogue.
+const collab = require('./routes/collab');
+app.use('/api/workspaces/:id', collab.workspace);   // requests / issues / commits within a workspace
+app.use('/api/requests', collab.requests);           // reviewer's cross-workspace inbox
+
+// Metadata for the wizard/UI: typed field catalogue + section catalogue (from AI service).
 app.get('/api/meta', async (_req, res) => {
   let fields = [];
+  let stepMeta = {};
+  let sections = store.SECTIONS;
   try {
-    const r = await fetch(`${ai.AI_BASE}/schema/fields`);
-    if (r.ok) {
-      const data = await r.json();
-      fields = data.fields.map((f) => ({
-        key: f.key, label: f.label, wizard_step: f.wizard_step,
-        category: f.category, required: f.required,
-      }));
-    }
-  } catch { /* AI down — return sections only */ }
+    const [rf, rs] = await Promise.all([
+      fetch(`${ai.AI_BASE}/schema/fields`),
+      fetch(`${ai.AI_BASE}/schema/sections`),
+    ]);
+    if (rf.ok) { const d = await rf.json(); fields = d.fields; stepMeta = d.step_meta || {}; }
+    if (rs.ok) { const d = await rs.json(); sections = d.sections; }
+  } catch { /* AI down — fall back to local section mirror */ }
   res.json({
     fields,
     wizard_steps: ['company', 'promoters', 'financials', 'legal', 'issue', 'risk'],
-    sections: store.SECTIONS,
+    step_meta: stepMeta,
+    sections,
     doc_checklist: store.REQUIRED_DOC_CATEGORIES,
   });
 });

@@ -10,6 +10,8 @@ import ValidationPanel from './pages/ValidationPanel.jsx';
 import DraftViewer from './pages/DraftViewer.jsx';
 import ReviewView from './pages/ReviewView.jsx';
 import ExportSummary from './pages/ExportSummary.jsx';
+import AccessPanel from './pages/AccessPanel.jsx';
+import IssuesPanel from './pages/IssuesPanel.jsx';
 
 function Topbar() {
   const { user, logout } = useAuth();
@@ -49,6 +51,8 @@ export default function App() {
           <Route path="draft" element={<DraftViewer />} />
           <Route path="review" element={<ReviewView />} />
           <Route path="export" element={<ExportSummary />} />
+          <Route path="access" element={<AccessPanel />} />
+          <Route path="issues" element={<IssuesPanel />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

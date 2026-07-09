@@ -3,6 +3,7 @@ const express = require('express');
 const { authRequired, requireRole } = require('../auth');
 const store = require('../store');
 const ai = require('../aiClient');
+const { validateBatch } = require('../fieldSchema');
 
 const { db } = store;
 const router = express.Router();
@@ -90,8 +91,11 @@ router.get('/:id/data', authRequired, loadWs, (req, res) => {
 });
 
 // Autosave a batch of fields. body: { fields: { "company.name": "...", ... } }
-router.put('/:id/data', authRequired, loadWs, (req, res) => {
+// Values are type-checked against the field schema; invalid -> 422 with per-field errors.
+router.put('/:id/data', authRequired, loadWs, async (req, res) => {
   const fields = (req.body && req.body.fields) || {};
+  const { errors } = await validateBatch(fields);
+  if (Object.keys(errors).length) return res.status(422).json({ error: 'validation failed', errors });
   let n = 0;
   for (const [key, value] of Object.entries(fields)) {
     store.upsertIpoData(req.workspace.id, key, String(value), req.user.id);

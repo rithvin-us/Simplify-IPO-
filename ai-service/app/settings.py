@@ -19,6 +19,9 @@ class Settings:
         self.anthropic_model = _env("ANTHROPIC_MODEL", "claude-sonnet-5")
         self.openai_model = _env("OPENAI_MODEL", "gpt-4o")
         self.port = int(_env("AI_SERVICE_PORT", "8000") or "8000")
+        # Module 15 (RAG): pgvector store + embedding provider.
+        self.database_url = _env("DATABASE_URL")
+        self.openai_embed_model = _env("OPENAI_EMBED_MODEL", "text-embedding-3-small")
 
     @property
     def llm_enabled(self) -> bool:

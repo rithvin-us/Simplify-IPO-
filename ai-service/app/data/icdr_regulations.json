@@ -1,0 +1,131 @@
+{
+  "note": "Abridged paraphrases of SEBI (ICDR) Regulations, 2018 provisions relevant to SME IPO offer documents. Prototype corpus for the RAG pipeline — NOT legal text; replace with licensed full-text chunks in production.",
+  "chunks": [
+    {
+      "id": "icdr-sch6-general",
+      "reg_code": "ICDR Sch. VI Part A(1)",
+      "title": "General information about the issuer",
+      "section_keys": ["company_overview"],
+      "text": "The offer document shall disclose general information about the issuer: legal and commercial name, corporate identity number (CIN), date and place of incorporation, address of the registered office and changes thereto, and the stock exchanges where listing is sought. History and certain corporate matters shall be summarised, including major events, changes of name, and any reorganisation or restructuring."
+    },
+    {
+      "id": "icdr-sch6-risk",
+      "reg_code": "ICDR Sch. VI Part A(2)",
+      "title": "Risk factors",
+      "section_keys": ["risk_factors"],
+      "text": "Risk factors shall be disclosed in decreasing order of materiality, internal risks first followed by external risks. Each risk factor shall include a statement of its potential impact on the issuer; risks shall be quantified where possible. Generic risks without issuer-specific context shall be avoided, and mitigating language shall not be used in a manner that dilutes the risk disclosed."
+    },
+    {
+      "id": "icdr-sch6-capital",
+      "reg_code": "ICDR Sch. VI Part A(3)",
+      "title": "Capital structure",
+      "section_keys": ["company_overview", "objects_of_issue"],
+      "text": "The offer document shall set out the capital structure: authorised, issued, subscribed and paid-up capital, the pre-issue and post-issue shareholding of the promoters and promoter group, the build-up of the promoters' shareholding, details of employee stock option schemes, and shares issued in the preceding year at a price lower than the issue price."
+    },
+    {
+      "id": "icdr-sch6-objects",
+      "reg_code": "ICDR Sch. VI Part A(4)",
+      "title": "Objects of the issue",
+      "section_keys": ["objects_of_issue"],
+      "text": "The objects of the issue shall be disclosed with a detailed break-up of the utilisation of net proceeds, the schedule of implementation and deployment of funds, the means of finance for any shortfall, interim use of funds pending deployment, and appointment of a monitoring agency where required. General corporate purposes shall not exceed the prescribed proportion of the issue size."
+    },
+    {
+      "id": "icdr-sch6-basis-price",
+      "reg_code": "ICDR Sch. VI Part A(5)",
+      "title": "Basis for issue price",
+      "section_keys": ["objects_of_issue", "financial_summary"],
+      "text": "The basis for the issue price shall be disclosed using quantitative factors such as earnings per share, price-to-earnings ratio, return on net worth and net asset value per share, with comparisons against listed industry peers where available, together with qualitative factors that justify the premium sought."
+    },
+    {
+      "id": "icdr-sch6-business",
+      "reg_code": "ICDR Sch. VI Part A(6)",
+      "title": "Business overview",
+      "section_keys": ["business"],
+      "text": "The offer document shall describe the issuer's business: products and services, installed capacity and capacity utilisation, the marketing set-up, competition, competitive strengths, key operational metrics, properties, intellectual property, and the number of employees. Statements about market position shall be supported by cited industry data."
+    },
+    {
+      "id": "icdr-sch6-management",
+      "reg_code": "ICDR Sch. VI Part A(7)",
+      "title": "Management and board",
+      "section_keys": ["business", "company_overview"],
+      "text": "Disclosures on management shall include the composition of the board of directors, brief profiles of directors and key managerial personnel, their remuneration, borrowing powers, corporate governance compliance, and interests of directors in the issuer."
+    },
+    {
+      "id": "icdr-sch6-promoters",
+      "reg_code": "ICDR Sch. VI Part A(8)",
+      "title": "Promoters and promoter group",
+      "section_keys": ["business", "company_overview"],
+      "text": "The offer document shall identify the promoters and promoter group, including their experience, qualifications, other ventures and interests in the issuer. Where promoters have interests in entities in a similar line of business, the resulting conflicts of interest shall be disclosed as a risk factor."
+    },
+    {
+      "id": "icdr-sch6-financials",
+      "reg_code": "ICDR Sch. VI Part A(9)",
+      "title": "Restated financial information",
+      "section_keys": ["financial_summary"],
+      "text": "The offer document shall include restated financial statements for the three preceding financial years and any stub period, audited by auditors holding a valid peer-review certificate. Key accounting ratios (EPS, RoNW, NAV, debt-equity) and a capitalisation statement shall accompany the restated financials."
+    },
+    {
+      "id": "icdr-sch6-mdna",
+      "reg_code": "ICDR Sch. VI Part A(10)",
+      "title": "Management's discussion and analysis",
+      "section_keys": ["financial_summary"],
+      "text": "Management's discussion and analysis of financial condition and results of operations shall compare the periods presented, explaining material changes in revenue, expenditure and profitability, unusual or infrequent events, known trends and uncertainties, and significant developments after the last balance-sheet date."
+    },
+    {
+      "id": "icdr-sch6-litigation",
+      "reg_code": "ICDR Sch. VI Part A(12)",
+      "title": "Outstanding litigations and material developments",
+      "section_keys": ["risk_factors"],
+      "text": "The offer document shall disclose outstanding litigations involving the issuer, its promoters and directors: criminal proceedings, actions by regulatory or statutory authorities, tax claims, and material civil litigation as per the issuer's board-approved materiality policy, along with defaults and disciplinary actions by SEBI or the stock exchanges."
+    },
+    {
+      "id": "icdr-sch6-approvals",
+      "reg_code": "ICDR Sch. VI Part A(13)",
+      "title": "Government and other approvals",
+      "section_keys": ["business", "risk_factors"],
+      "text": "The offer document shall list material government and statutory approvals required for the business, those obtained and their validity, and approvals applied for but pending, with the status of each application. Absence of a material approval shall be disclosed as a risk factor."
+    },
+    {
+      "id": "icdr-ch9-eligibility",
+      "reg_code": "ICDR Reg. 229 (Ch. IX)",
+      "title": "SME IPO eligibility",
+      "section_keys": ["company_overview", "objects_of_issue"],
+      "text": "An issuer may make an initial public offer on an SME exchange if its post-issue paid-up capital does not exceed twenty five crore rupees. The issuer shall satisfy the track-record conditions prescribed for SME issues and ensure the minimum number of allottees in the issue is fifty."
+    },
+    {
+      "id": "icdr-ch9-promoter-contribution",
+      "reg_code": "ICDR Reg. 236 (Ch. IX)",
+      "title": "Minimum promoters' contribution (SME)",
+      "section_keys": ["objects_of_issue"],
+      "text": "The promoters of an SME issuer shall contribute not less than twenty per cent of the post-issue capital as minimum promoters' contribution, held in the manner and subject to the ineligibility conditions prescribed for securities offered towards such contribution."
+    },
+    {
+      "id": "icdr-ch9-lockin",
+      "reg_code": "ICDR Reg. 238-239 (Ch. IX)",
+      "title": "Lock-in requirements (SME)",
+      "section_keys": ["objects_of_issue", "risk_factors"],
+      "text": "The minimum promoters' contribution shall be locked in for three years from the date of allotment in the public issue; promoters' holding in excess of the minimum contribution shall be locked in for one year. The entire pre-issue capital held by persons other than promoters shall also be locked in for one year, subject to prescribed exemptions."
+    },
+    {
+      "id": "icdr-ch9-offer-doc",
+      "reg_code": "ICDR Reg. 246 (Ch. IX)",
+      "title": "Filing of offer document (SME)",
+      "section_keys": ["company_overview"],
+      "text": "For an SME issue, the draft offer document shall be filed with the SME exchange rather than through the SEBI observation route. The issuer shall obtain in-principle approval from the exchange, and the lead manager shall submit a due-diligence certificate confirming that disclosures comply with these regulations."
+    },
+    {
+      "id": "icdr-ch9-market-making",
+      "reg_code": "ICDR Reg. 261 (Ch. IX)",
+      "title": "Market making (SME)",
+      "section_keys": ["objects_of_issue", "risk_factors"],
+      "text": "The merchant banker shall ensure compulsory market making through registered market makers of the SME exchange for at least three years from listing. The arrangement, obligations of the market maker and associated risks shall be disclosed in the offer document."
+    },
+    {
+      "id": "icdr-adequate-disclosure",
+      "reg_code": "ICDR general obligation",
+      "title": "True, correct and adequate disclosure",
+      "section_keys": ["company_overview", "business", "financial_summary", "risk_factors", "objects_of_issue"],
+      "text": "The offer document shall contain true, correct and adequate disclosures to enable investors to take an informed decision. Statements shall not be misleading, forward-looking statements shall have a reasonable basis, and disclosures across sections of the offer document shall be internally consistent."
+    }
+  ]
+}

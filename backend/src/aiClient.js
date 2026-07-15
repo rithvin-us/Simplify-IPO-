@@ -25,6 +25,8 @@ const extract = (payload) => postJson('/extract', payload);
 const validate = (payload) => postJson('/validate', payload);
 const draft = (payload) => postJson('/draft', payload);
 const exportDoc = (payload) => postJson('/export', payload);
+const consistency = (payload) => postJson('/consistency', payload); // Module 16
+const translate = (payload) => postJson('/translate', payload);     // Module 17
 
 async function health() {
   try {
@@ -35,4 +37,4 @@ async function health() {
   }
 }
 
-module.exports = { AI_BASE, parse, extract, validate, draft, exportDoc, health };
+module.exports = { AI_BASE, parse, extract, validate, draft, exportDoc, consistency, translate, health };

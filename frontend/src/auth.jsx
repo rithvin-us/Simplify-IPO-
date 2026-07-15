@@ -15,8 +15,17 @@ export function AuthProvider({ children }) {
     setUser(u);
   }
 
+  // Returns { user } on success or { mfa_required, mfa_token } when the
+  // account needs the second factor (complete via mfaLogin).
   async function login(email, password) {
     const { data } = await api.post('/auth/login', { email, password });
+    if (data.mfa_required) return { mfa_required: true, mfa_token: data.mfa_token };
+    persist(data.token, data.user);
+    return { user: data.user };
+  }
+
+  async function mfaLogin(mfa_token, code) {
+    const { data } = await api.post('/auth/mfa/login', { mfa_token, code });
     persist(data.token, data.user);
     return data.user;
   }
@@ -34,7 +43,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, mfaLogin, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

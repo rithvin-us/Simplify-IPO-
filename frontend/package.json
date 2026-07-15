@@ -1,7 +1,7 @@
 {
   "name": "ipow-frontend",
-  "version": "0.1.0",
-  "description": "IPO Drafting Workspace — React SPA",
+  "version": "0.2.0",
+  "description": "IPO Drafting Workspace — React SPA (i18n, realtime collab, version history)",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -12,7 +12,15 @@
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "react-router-dom": "^6.26.0",
-    "axios": "^1.7.0"
+    "axios": "^1.7.0",
+    "i18next": "^23.15.0",
+    "react-i18next": "^15.0.2",
+    "yjs": "^13.6.19",
+    "y-websocket": "^2.0.4",
+    "y-codemirror.next": "^0.3.5",
+    "codemirror": "^6.0.1",
+    "@codemirror/state": "^6.4.1",
+    "@codemirror/view": "^6.34.1"
   },
   "devDependencies": {
     "vite": "^5.4.0",

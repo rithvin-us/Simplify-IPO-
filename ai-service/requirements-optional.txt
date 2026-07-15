@@ -7,3 +7,5 @@ openai>=1.50           # LLM_PROVIDER=openai
 pymupdf>=1.24          # PDF text/table extraction (/parse)
 python-docx>=1.1       # .docx parsing + DRHP .docx export (/parse, /export)
 openpyxl>=3.1          # .xlsx parsing (/parse)
+psycopg[binary]>=3.2   # Module 15: pgvector-backed regulation index (DATABASE_URL)
+pgvector>=0.3          # Module 15: vector type adapter for psycopg

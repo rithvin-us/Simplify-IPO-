@@ -1,16 +1,16 @@
 require('dotenv').config();
+const http = require('http');
 const express = require('express');
 const cors = require('cors');
 
 const store = require('./store');
 const ai = require('./aiClient');
+const realtime = require('./realtime');
+const { runMigrations } = require('../scripts/migrate');
 
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '2mb' }));
-
-// Seed demo users (sme@demo.in / mb@demo.in / legal@demo.in, password "demo").
-store.seed();
 
 // Route modules.
 app.use('/api/auth', require('./routes/auth'));
@@ -46,10 +46,32 @@ app.get('/api/meta', async (_req, res) => {
 });
 
 app.get('/api/health', async (_req, res) => {
-  res.json({ status: 'ok', ai: await ai.health() });
+  let db = 'ok';
+  try { await store.pool.query('SELECT 1'); } catch (e) { db = `error: ${e.message}`; }
+  res.json({ status: 'ok', db, ai: await ai.health() });
 });
 
-const port = process.env.PORT || 4000;
-app.listen(port, () => {
-  console.log(`IPOW backend listening on :${port}  (AI service: ${ai.AI_BASE})`);
+// Async route errors land here (via the ah() wrapper in middleware.js).
+app.use((err, _req, res, _next) => {
+  console.error('unhandled route error:', err);
+  res.status(500).json({ error: 'internal error', detail: String(err.message || err) });
+});
+
+async function main() {
+  if (process.env.RUN_MIGRATIONS === '1') await runMigrations();
+  // Seed demo users (sme@demo.in / mb@demo.in / legal@demo.in, password "demo").
+  await store.seed();
+
+  const server = http.createServer(app);
+  realtime.attach(server); // WebSocket /collab/<workspaceId>/<sectionKey>
+
+  const port = process.env.PORT || 4000;
+  server.listen(port, () => {
+    console.log(`IPOW backend listening on :${port}  (AI service: ${ai.AI_BASE})`);
+  });
+}
+
+main().catch((e) => {
+  console.error('fatal startup error:', e.message);
+  process.exit(1);
 });

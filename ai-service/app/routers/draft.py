@@ -2,13 +2,22 @@
 
 Never one-click full-document generation. Offline path renders a formal
 section template, inserting [INFORMATION REQUIRED: ...] where data is absent.
+
+Phase 2:
+  Module 15 — regulatory context comes from the ICDR RAG index (top-k retrieved
+              chunks) instead of the single hardcoded snippet; the response
+              carries the retrieved reg codes as `citations`.
+  Module 17 — `language` drafts the section natively in that language (LLM
+              path; the deterministic stub stays English and says so).
 """
 from __future__ import annotations
 
 from fastapi import APIRouter
 from pydantic import BaseModel
 
+from ..languages import language_name
 from ..llm import complete
+from ..rag import regulation_index
 from ..schema import FIELD_BY_KEY, SECTION_BY_KEY
 
 router = APIRouter(tags=["draft"])
@@ -17,6 +26,7 @@ router = APIRouter(tags=["draft"])
 class DraftRequest(BaseModel):
     section_key: str
     ipo_data: dict[str, str] = {}
+    language: str = "en"  # Module 17: ISO code, see /languages
 
 
 def _val(data: dict, key: str) -> str:
@@ -25,6 +35,19 @@ def _val(data: dict, key: str) -> str:
         return v
     label = FIELD_BY_KEY.get(key, {}).get("label", key)
     return f"[INFORMATION REQUIRED: {label}]"
+
+
+# Module 15: retrieve regulatory context for this section from the RAG index.
+# Falls back to the catalogue's single hardcoded snippet if retrieval fails.
+def _regulatory_context(sec: dict) -> tuple[str, list[str]]:
+    try:
+        hits = regulation_index.search(f"{sec['title']}. {sec['instructions']}", k=3)
+    except Exception:
+        hits = []
+    if not hits:
+        return sec["regulation"], []
+    context = "\n".join(f"- [{h['reg_code']}] {h['title']}: {h['text']}" for h in hits)
+    return context, [h["reg_code"] for h in hits]
 
 
 def _stub_draft(sec: dict, data: dict) -> str:
@@ -78,17 +101,25 @@ def _stub_draft(sec: dict, data: dict) -> str:
     )
 
 
-def _llm_draft(sec: dict, data: dict) -> str:
+def _llm_draft(sec: dict, data: dict, reg_context: str, language: str) -> str:
     system = ("You are drafting one section of a Draft Red Herring Prospectus for an SME "
               "IPO on an Indian SME Exchange, aligned with SEBI ICDR disclosure norms.")
+    lang_rule = ""
+    if language != "en":
+        lang_rule = (
+            f"\nDraft natively in {language_name(language)}. Keep statutory references, "
+            "defined terms and figures (e.g. 'SEBI ICDR', CIN, ₹ amounts) in their "
+            "original form."
+        )
     user = (
         f"Section to draft: {sec['title']}\n"
         f"Section-specific instructions: {sec['instructions']}\n"
-        f"Relevant SEBI ICDR disclosure requirement: {sec['regulation']}\n"
+        f"Relevant SEBI ICDR disclosure requirements (retrieved):\n{reg_context}\n"
         f"Structured company data: {data}\n\n"
         "Rules: use ONLY the structured data provided; where required information is absent, "
         "insert [INFORMATION REQUIRED: <what is missing>] rather than inventing it. Formal "
         "prospectus register, third person, no marketing language. Output clean markdown."
+        f"{lang_rule}"
     )
     return complete(system, user, max_tokens=1500)
 
@@ -99,11 +130,15 @@ def draft(req: DraftRequest) -> dict:
     if sec is None:
         return {"error": f"unknown section '{req.section_key}'",
                 "known": list(SECTION_BY_KEY)}
+    reg_context, citations = _regulatory_context(sec)
     try:
-        content = _llm_draft(sec, req.ipo_data)
+        content = _llm_draft(sec, req.ipo_data, reg_context, req.language)
         mode = "llm"
     except Exception:  # LLMUnavailable or any provider error -> deterministic stub
         content = _stub_draft(sec, req.ipo_data)
+        if req.language != "en":
+            content = (f"> [stub mode: native {language_name(req.language)} drafting requires "
+                       "an LLM provider — English template shown]\n\n") + content
         mode = "stub"
     missing = [k for k in sec["required_fields"] if not (req.ipo_data.get(k) or "").strip()]
     return {
@@ -113,4 +148,6 @@ def draft(req: DraftRequest) -> dict:
         "owner_role": sec["owner_role"],
         "content": content,
         "missing": missing,
+        "language": req.language,
+        "citations": citations,  # Module 15: retrieved ICDR reg codes
     }
